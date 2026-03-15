@@ -4,8 +4,8 @@ This repository contains the solution for the GSoC Task "Negative Weight Mitigat
 ## Structure:
 1. **Data Pipeline & Born Projection:** The script parses real_events.csv and virtual_events.csv. Real events are mapped to the born phase space by shifting their transverse momentum ($p_T = p_{T,real} + z_{gluon}$) , allowing both datasets to be evaluated in the same dimensionality.
 
-2. **Spatial Indexing & The VP-Tree Connection:** To perform the cell resampling efficiently, the phase space $(p_T, y)$ is loaded into a spatial index. I wasn't sure which algorithms to be used so I used a KD-Tree for this taskl, I am familiar with the fact that Vantage-Point Trees is mentioned in the research papers however, the output remained same when I tried using VP Tree, code for both are uploaded.
-To utilize standard Euclidean queries while using the requested distance formula provided ( $d_{i,j} = \sqrt{\Delta p_T^2 + 100 \Delta y^2}$ ), the component is pre-scaled by a factor of 10 prior to tree construction. This will provide the necessary $\mathcal{O}(N \log N)$ search speeds while   keeping the prototype lean.
+2. **Spatial Indexing & The VP-Tree Connection:** To perform the cell resampling efficiently, the phase space $(p_T, y)$ is loaded into a spatial index. I wasn't sure which algorithms to be used so I used a KD-Tree for this task, I am familiar with the fact that Vantage-Point Trees is mentioned in the research papers however, the output remained same when I tried using VP Tree, code for both are uploaded.
+To utilize standard Euclidean queries while using the distance formula provided ( $d_{i,j} = \sqrt{\Delta p_T^2 + 100 \Delta y^2}$ ), the component is multiplied by a factor of 10 prior to tree construction. This will provide the necessary $\mathcal{O}(N \log N)$ search speeds while  keeping the prototype lean.
 
 4. **Dynamic Cell Growth:** The algorithm iterates over negatively weighted events aka seeeds. For each seed, it queries the KD Tree for nearest neighbors, aggregating them until the localized cell achieves a positive weight ($\ge 0$).
 
