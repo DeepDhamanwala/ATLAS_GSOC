@@ -1,2 +1,1 @@
-# ATLAS_GSOC
-evaluation task for atlas gsoc
+# Cell Resampling for Negative Weight Mitigation
