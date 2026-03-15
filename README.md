@@ -5,13 +5,14 @@ This repository contains the solution for the GSoC Task "Negative Weight Mitigat
 1. **Data Pipeline & Born Projection:** The script parses real_events.csv and virtual_events.csv. Real events are mapped to the born phase space by shifting their transverse momentum ($p_T = p_{T,real} + z_{gluon}$) , allowing both datasets to be evaluated in the same dimensionality.
 
 2. **Spatial Indexing & The VP-Tree Connection:** To perform the cell resampling efficiently, the phase space $(p_T, y)$ is loaded into a spatial index. While I am aware that the  CRES Rust codebase uses Vantage-Point Trees algorithm to  handle arbitrary kinematic distance metrics, I used scipy.spatial.KDTree for this in order to leverage its highly optimized C-backend.
-To utilize standard Euclidean queries while using the requested distance formula provided ( $d_{i,j} = \sqrt{\Delta p_T^2 + 100 \Delta y^2}$ ), the   component is pre-scaled by a factor of 10 prior to tree construction. This will provide the necessary $\mathcal{O}(N \log N)$ search speeds while     keeping the prototype lean.
+I have already tried to implement VP tree and both algorithms resulted in same outputs.
+To utilize standard Euclidean queries while using the requested distance formula provided ( $d_{i,j} = \sqrt{\Delta p_T^2 + 100 \Delta y^2}$ ), the component is pre-scaled by a factor of 10 prior to tree construction. This will provide the necessary $\mathcal{O}(N \log N)$ search speeds while   keeping the prototype lean.
 
-3. **Dynamic Cell Growth:** The algorithm iterates over negatively weighted events aka seeeds. For each seed, it queries the KD Tree for nearest neighbors, aggregating them until the localized cell achieves a positive weight ($\ge 0$).
+4. **Dynamic Cell Growth:** The algorithm iterates over negatively weighted events aka seeeds. For each seed, it queries the KD Tree for nearest neighbors, aggregating them until the localized cell achieves a positive weight ($\ge 0$).
 
-4. **Redistribution:** Once a cell is purely positive, the absolute weight fraction formula is applied in a vectorized manner to redistribute the event weights, squashing all localized negative values to zero while perfectly preserving the aggregate cross-section.
+5. **Redistribution:** Once a cell is purely positive, the absolute weight fraction formula is applied in a vectorized manner to redistribute the event weights, squashing all localized negative values to zero while perfectly preserving the aggregate cross-section.
 
-5. **Computational Complexity:** Let $N$ be the total number of events and $M$ be the number of initial negative weight seeds.\
+6. **Computational Complexity:** Let $N$ be the total number of events and $M$ be the number of initial negative weight seeds.\
    Building the KD-Tree: $\mathcal{O}(N \log N)$ space and time.\
    Nearest-Neighbor Search: For each seed, querying neighbors dynamically scales as $\mathcal{O}(K \log N)$, where $K$ is the number of events required to reach a positive sum.<br>
    In worst-case scenario (e.g., entire data contains negative weights), querying all neighbors is $\mathcal{O}(N \log N)$.\
