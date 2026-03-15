@@ -8,7 +8,7 @@ class VPTreeNode:
         self.point = point
         self.idx = idx
         self.median_dist = 0.0
-        self.inside = None   # lft child
+        self.inside = None   # left child
         self.outside = None  # right child
 
 # distance formula
