@@ -28,6 +28,7 @@ def main():
     print(f"Initial negative weight fraction: {np.sum(w[w < 0]) / np.sum(np.abs(w)):.4f}")
 
     # 3. implementing cell resampling
+    # used KD Tree to implement the formula given below 
     # distance d is sqrt((pt_i - pt_j)**2 + 100 * (y_i - y_j)**2)
     # scaling the y-coordinates by sqrt(100) = 10, we can use a standard Euclidean KDTree
     y_scaled = y * 10.0
